@@ -6,15 +6,18 @@ class TestDataProvider extends EventEmitter {
 	}
 
 	monitorArea(from, to) {
-		for (var i = 0; i < 10; i++) {
-			let lat = Math.random()*to.x - from.x
-			let lon = Math.random()*to.y - from.y
-			this.emit('item', {
-				id:Math.random()*100,
-				text:'Some text' + Math.random()*2000,
-				lat,
-				lon,
-			})
+		for (var i = 0; i < 5; i++) {
+			for(var j =0 ; j < 5 ; j++ ) {
+				let lat = Math.random() * i
+				let lon = Math.random() * j
+				this.emit('item', {
+					id:Math.random()*100,
+					text:'Some text' + Math.random()*2000,
+					lat:lat,
+					lon:lon,
+				})
+			}
+			
 		}
 	}
 }

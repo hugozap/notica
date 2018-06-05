@@ -1,7 +1,7 @@
 import LandMap,{REF_MAP} from './LandMap'
 import * as domUtils from './domUtils'
 import {Point} from './utils'
-
+import noteRenderer from './NoteRenderer'
 /**
  La clase mapview se encarga de manipular el DOM para
  mostrar las parcelas
@@ -11,12 +11,13 @@ import {Point} from './utils'
 
 
 //pixels moved when arrows are pressed
-const KEYBOARD_STEP  = 100;
+const KEYBOARD_STEP  = 400;
 const defaultOpts = {
 	containerElement: 'body',
-	itemRenderer: null,
+	itemRenderer: noteRenderer,
 	parcelLength: 200,
-	dataProvider: null
+	dataProvider: null,
+
 }
 
 //TODO: add base css here
@@ -36,7 +37,8 @@ const css = `
 	    position: absolute;
 	    top: 0;
 	    left: 0;
-	    transition: transform 1s;
+	    transition: transform 0.5s;
+	    word-wrap: break-word;
 	}
 `
 
@@ -150,7 +152,7 @@ export default class MapView {
 	createItemElement(item) {
 		//todo delegate this to item renderer
 		var elem = document.createElement('div')
-		elem.innerText = item.text;
+		elem.innerHTML = this.opts.itemRenderer(item);
 		return elem;
 	}
 
@@ -160,17 +162,17 @@ export default class MapView {
 			if(allowed.indexOf(ev.key) >= 0 ) {
 					switch(ev.key) {
 					case "ArrowDown":
-						this.map.move({y:KEYBOARD_STEP});
+						this.map.move({y:-KEYBOARD_STEP});
 						break;
 					case "ArrowLeft":
-						this.map.move({x:-KEYBOARD_STEP});
+						this.map.move({x:KEYBOARD_STEP});
 						
 						break;
 					case "ArrowRight":
-						this.map.move({x:KEYBOARD_STEP});
+						this.map.move({x:-KEYBOARD_STEP});
 						break;
 					case "ArrowUp":
-						this.map.move({y:-KEYBOARD_STEP});
+						this.map.move({y:KEYBOARD_STEP});
 						break;
 					default:
 						break;

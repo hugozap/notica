@@ -564,6 +564,10 @@ var domUtils = _interopRequireWildcard(_domUtils);
 
 var _utils = __webpack_require__(/*! ./utils */ "./src/utils.js");
 
+var _NoteRenderer = __webpack_require__(/*! ./NoteRenderer */ "./src/NoteRenderer.js");
+
+var _NoteRenderer2 = _interopRequireDefault(_NoteRenderer);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -579,16 +583,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 //pixels moved when arrows are pressed
-var KEYBOARD_STEP = 100;
+var KEYBOARD_STEP = 400;
 var defaultOpts = {
 	containerElement: 'body',
-	itemRenderer: null,
+	itemRenderer: _NoteRenderer2.default,
 	parcelLength: 200,
 	dataProvider: null
 
 	//TODO: add base css here
 
-};var css = '\n\n\t.content-container {\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\toverflow: hidden;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t}\n\n\t.item {\n\t    position: absolute;\n\t    top: 0;\n\t    left: 0;\n\t    transition: transform 1s;\n\t}\n';
+};var css = '\n\n\t.content-container {\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\toverflow: hidden;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t}\n\n\t.item {\n\t    position: absolute;\n\t    top: 0;\n\t    left: 0;\n\t    transition: transform 0.5s;\n\t    word-wrap: break-word;\n\t}\n';
 
 domUtils.injectCSS(css);
 
@@ -707,7 +711,7 @@ var MapView = function () {
 		value: function createItemElement(item) {
 			//todo delegate this to item renderer
 			var elem = document.createElement('div');
-			elem.innerText = item.text;
+			elem.innerHTML = this.opts.itemRenderer(item);
 			return elem;
 		}
 	}, {
@@ -720,17 +724,17 @@ var MapView = function () {
 				if (allowed.indexOf(ev.key) >= 0) {
 					switch (ev.key) {
 						case "ArrowDown":
-							_this4.map.move({ y: KEYBOARD_STEP });
+							_this4.map.move({ y: -KEYBOARD_STEP });
 							break;
 						case "ArrowLeft":
-							_this4.map.move({ x: -KEYBOARD_STEP });
+							_this4.map.move({ x: KEYBOARD_STEP });
 
 							break;
 						case "ArrowRight":
-							_this4.map.move({ x: KEYBOARD_STEP });
+							_this4.map.move({ x: -KEYBOARD_STEP });
 							break;
 						case "ArrowUp":
-							_this4.map.move({ y: -KEYBOARD_STEP });
+							_this4.map.move({ y: KEYBOARD_STEP });
 							break;
 						default:
 							break;
@@ -747,6 +751,26 @@ var MapView = function () {
 }();
 
 exports.default = MapView;
+
+/***/ }),
+
+/***/ "./src/NoteRenderer.js":
+/*!*****************************!*\
+  !*** ./src/NoteRenderer.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function (item) {
+	return "\n\t<div class=\"background-secondary border border-primary\" style=\"width: 8rem; height:10rem; padding: 1rem;\">\n\t   \t" + item.text + "\n\t</div>";
+};
 
 /***/ }),
 
@@ -790,15 +814,17 @@ var TestDataProvider = function (_EventEmitter) {
 	_createClass(TestDataProvider, [{
 		key: 'monitorArea',
 		value: function monitorArea(from, to) {
-			for (var i = 0; i < 10; i++) {
-				var lat = Math.random() * to.x - from.x;
-				var lon = Math.random() * to.y - from.y;
-				this.emit('item', {
-					id: Math.random() * 100,
-					text: 'Some text' + Math.random() * 2000,
-					lat: lat,
-					lon: lon
-				});
+			for (var i = 0; i < 5; i++) {
+				for (var j = 0; j < 5; j++) {
+					var lat = Math.random() * i;
+					var lon = Math.random() * j;
+					this.emit('item', {
+						id: Math.random() * 100,
+						text: 'Some text' + Math.random() * 2000,
+						lat: lat,
+						lon: lon
+					});
+				}
 			}
 		}
 	}]);
@@ -856,7 +882,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //this should render the parcels
 new _MapView2.default({
 	dataProvider: new _TestRandomDataProvider2.default(),
-	parcelLength: 400
+	parcelLength: 500
 });
 
 /***/ }),

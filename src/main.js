@@ -5,5 +5,5 @@ import TestRandomDataProvider from './TestRandomDataProvider2';
 //this should render the parcels
 new MapView({
 	dataProvider: new TestRandomDataProvider(),
-	parcelLength: 400
+	parcelLength: 500
 })

@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-	entry: './src/main.js',
+	entry: ['regenerator-runtime/runtime','./src/main.js'],
 	output: {
 		path: path.resolve(__dirname, 'build'),
 		filename: 'main.bundle.js'

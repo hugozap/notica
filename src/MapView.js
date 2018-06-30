@@ -2,6 +2,9 @@ import LandMap,{REF_MAP} from './LandMap'
 import * as domUtils from './domUtils'
 import {Point} from './utils'
 import noteRenderer from './NoteRenderer'
+import EventEmitter from 'events'
+
+
 /**
  La clase mapview se encarga de manipular el DOM para
  mostrar las parcelas
@@ -44,9 +47,10 @@ const css = `
 
 domUtils.injectCSS(css);
 
-export default class MapView {
+export default class MapView extends EventEmitter {
 
 	constructor(opts) {
+		super()
 		opts = Object.assign({}, defaultOpts,  opts);
 		this.opts = opts; 
 		this.offset = opts.offset || new Point(0,0)
@@ -182,7 +186,9 @@ export default class MapView {
 	}
 
 	addMouseEvents() {
-
+		this.contentContainer.addEventListener('click', (ev)=>{
+			this.emit('content-area-clicked', ev)
+		})
 	}
 
 }

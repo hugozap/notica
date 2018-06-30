@@ -8,20 +8,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "eventemitter": "^0.3.3",
     "events": "^3.0.0",
     "gun": "^0.9.997",
     "jest": "^23.1.0",
-    "papercss": "^1.4.1",
-    "webpack": "^4.10.1"
+    "papercss": "^1.4.1"
   },
   "devDependencies": {
+    "webpack": "^4.10.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.0.1",
     "regenerator-runtime": "^0.11.1",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^2.1.4",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }
